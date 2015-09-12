@@ -29,12 +29,12 @@ fi
 # avresample
 #CONFIGURE_FLAGS="$CONFIGURE_FLAGS --enable-avresample"
 
-ARCHS="arm64 armv7 x86_64 i386"
+ARCHS="arm64 armv7 armv7k x86_64 i386"
 
 COMPILE="y"
 LIPO="y"
 
-DEPLOYMENT_TARGET="6.0"
+DEPLOYMENT_TARGET="2.0"
 
 if [ "$*" ]
 then
@@ -91,12 +91,12 @@ then
 
 		CFLAGS="-arch $ARCH"
 		if [ "$ARCH" = "i386" -o "$ARCH" = "x86_64" ]
-		then
-		    PLATFORM="iPhoneSimulator"
-		    CFLAGS="$CFLAGS -mios-simulator-version-min=$DEPLOYMENT_TARGET"
+		then 
+		    PLATFORM="WatchSimulator"
+		    CFLAGS="$CFLAGS -mwatchos-simulator-version-min=$DEPLOYMENT_TARGET"
 		else
-		    PLATFORM="iPhoneOS"
-		    CFLAGS="$CFLAGS -mios-version-min=$DEPLOYMENT_TARGET"
+		    PLATFORM="WatchOS"
+		    CFLAGS="$CFLAGS -mwatchos-version-min=$DEPLOYMENT_TARGET"
 		    if [ "$ARCH" = "arm64" ]
 		    then
 		        EXPORT="GASPP_FIX_XCODE5=1"
@@ -128,7 +128,6 @@ then
 		    --extra-ldflags="$LDFLAGS" \
 		    --prefix="$THIN/$ARCH" \
 		|| exit 1
-
 		make -j3 install $EXPORT || exit 1
 		cd $CWD
 	done
